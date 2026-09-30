@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاختبار التفاعلي الشامل - رياضيات الصف العاشر (35 سؤالاً)</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                        },
+                        emeraldCustom: {
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- KaTeX for LaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Force Left-To-Right rendering for all Math and Numbers */
+        .katex, .katex-display, .katex-html, .math-ltr, [dir="ltr"] {
+            direction: ltr !important;
+            unicode-bidi: isolate !important;
+            text-align: left;
+        }
+
+        .katex {
+            font-size: 1.08em;
+            display: inline-block;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 360px;
+            }
+        }
+
+        .canvas-graph {
+            border: 1px solid #cbd5e1;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Title -->
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="w-10 h-10 rounded-lg bg-brand-600 flex items-center justify-center font-bold text-xl text-white shadow">
+                        📐
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg sm:text-xl tracking-tight text-slate-100">اختبار الرياضيات التفاعلي الشامل</h1>
+                        <p class="text-xs text-brand-300">الصف العاشر - 35 سؤالاً (الدوال والمقادير والمعادلات)</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex space-x-1 space-x-reverse text-sm font-medium">
+                    <button onclick="switchTab('quiz')" id="nav-quiz" class="px-3 py-2 rounded-md transition text-brand-400 bg-slate-800 font-semibold">
+                        📝 الاختبار (35)
+                    </button>
+                    <button onclick="switchTab('grapher')" id="nav-grapher" class="px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        📈 مختبر الرسوم البيانية
+                    </button>
+                    <button onclick="switchTab('summary')" id="nav-summary" class="px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        📊 التقرير والنتائج
+                    </button>
+                    <button onclick="switchTab('teacher')" id="nav-teacher" class="px-3 py-2 rounded-md transition text-slate-300 hover:text-white hover:bg-slate-800">
+                        🔗 مشاركة للمعلم
+                    </button>
+                </nav>
+
+                <!-- Mobile menu toggle -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 px-4 pt-2 pb-4 space-y-2 text-sm border-t border-slate-700">
+            <button onclick="switchTab('quiz'); toggleMobileMenu();" class="block w-full text-right px-3 py-2 rounded-md text-white bg-brand-700">📝 الاختبار (35 سؤالاً)</button>
+            <button onclick="switchTab('grapher'); toggleMobileMenu();" class="block w-full text-right px-3 py-2 rounded-md text-slate-300 hover:bg-slate-700">📈 مختبر الرسوم البيانية</button>
+            <button onclick="switchTab('summary'); toggleMobileMenu();" class="block w-full text-right px-3 py-2 rounded-md text-slate-300 hover:bg-slate-700">📊 التقرير والنتائج</button>
+            <button onclick="switchTab('teacher'); toggleMobileMenu();" class="block w-full text-right px-3 py-2 rounded-md text-slate-300 hover:bg-slate-700">🔗 مشاركة للمعلم</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Info & Toolbar Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 mb-1">المراجعة الشاملة لمنتصف الفصل - بنك الأسئلة المحدث (35 سؤالاً)</h2>
+                    <p class="text-sm text-slate-600">
+                        مخصص لمواضيع الدوال التربيعية، والمقادير الجبرية، وحل المعادلات والمميز، وإكمال المربع، والقانون العام.
+                    </p>
+                </div>
+                <!-- Student Inputs -->
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center space-x-2 space-x-reverse bg-slate-50 p-2 rounded-lg border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500">اسم الطالب:</span>
+                        <input type="text" id="student-name" placeholder="أدخل اسمك الكريم" class="bg-white border border-slate-300 text-xs rounded px-2 py-1 text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-500 w-36 sm:w-48">
+                    </div>
+                    <div class="flex items-center space-x-2 space-x-reverse bg-slate-50 p-2 rounded-lg border border-slate-200">
+                        <span class="text-xs font-semibold text-slate-500">الشعبة:</span>
+                        <input type="text" id="student-class" placeholder="10 / 1" class="bg-white border border-slate-300 text-xs rounded px-2 py-1 text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-500 w-16">
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4 border-slate-100">
+
+            <!-- Controls Toolbar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+                <!-- Filter Category -->
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <label for="category-filter" class="font-medium text-slate-700">تصفية حسب الموضوع:</label>
+                    <select id="category-filter" onchange="filterQuestions()" class="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 font-sans">
+                        <option value="all">جميع الموضوعات المقررة (35 سؤالاً)</option>
+                        <option value="quadratic_functions">الدوال التربيعية والتحويلات الهندسية (13 سؤالاً)</option>
+                        <option value="quadratic_equations">المعادلات والمقادير الجبرية (22 سؤالاً)</option>
+                    </select>
+                </div>
+
+                <!-- Instant Feedback & Timer -->
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="instant-feedback-toggle" class="sr-only peer" checked>
+                        <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-600 relative"></div>
+                        <span class="ms-2 text-xs font-medium text-slate-700">التغذية الراجعة الشارحة الفورية</span>
+                    </label>
+
+                    <div id="quiz-timer-container" class="bg-slate-100 px-3 py-1 rounded-full font-mono font-semibold text-slate-700 flex items-center space-x-1 space-x-reverse">
+                        <span>⏱️</span>
+                        <span id="quiz-timer" dir="ltr">00:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 1: QUIZ ENGINE -->
+        <section id="tab-quiz" class="space-y-6">
+
+            <!-- Progress Bar -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-600 mb-2">
+                    <span>نسبة الإنجاز في الاختبار: <span id="progress-text" class="text-brand-600 font-bold" dir="ltr">0 / 35</span></span>
+                    <span id="score-badge" class="bg-brand-50 text-brand-700 px-2 py-1 rounded-md border border-brand-200">الدرجة الحالية: 0 / 35</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                    <div id="progress-bar" class="bg-brand-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="questions-container" class="space-y-6">
+                <!-- Dynamically Populated Questions -->
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <button onclick="resetQuiz()" class="w-full sm:w-auto px-5 py-2.5 border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium rounded-lg transition text-sm">
+                    🔄 إعادة بدء الاختبار
+                </button>
+                <button onclick="submitQuiz()" class="w-full sm:w-auto px-8 py-2.5 bg-emeraldCustom-500 hover:bg-emeraldCustom-600 text-white font-bold rounded-lg shadow-md transition text-sm">
+                    ✅ إنهاء الاختبار واستعراض التقرير النهائي
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 2: HIGH-CLARITY INTERACTIVE GRAPHER -->
+        <section id="tab-grapher" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-slate-900 mb-1">📈 مختبر الرسم البياني التفاعلي عالي الوضوح للدالة التربيعية</h3>
+                    <p class="text-sm text-slate-600">
+                        قم بتعديل قيم المعاملات $a, h, k$ مع مشاهدة شبكة الإحداثيات والأرقام بوضوح، للتعرف على التحويلات الهندسية ونقطة رأس المنحنى ومحور التناظر.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Controls Column -->
+                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
+
+                        <!-- Equation Formula Box -->
+                        <div class="bg-white p-4 rounded-lg border border-slate-200 text-center shadow-inner">
+                            <span class="text-xs text-slate-500 block mb-1">صيغة الرأس للدالة التربيعية:</span>
+                            <div id="grapher-equation-display" class="text-xl font-bold text-brand-700 py-1" dir="ltr">
+                                $f(x) = a(x - h)^2 + k$
+                            </div>
+                        </div>
+
+                        <!-- Slider A -->
+                        <div>
+                            <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1">
+                                <span>المعامل $a$ (الانعكاس والاتساع):</span>
+                                <span id="val-a" class="font-mono bg-slate-200 px-2 py-0.5 rounded text-brand-700" dir="ltr">1</span>
+                            </div>
+                            <input type="range" id="slider-a" min="-3" max="3" step="0.1" value="1" oninput="updateGrapher()" class="w-full accent-brand-600">
+                            <span class="text-[11px] text-slate-500 block mt-0.5">($a > 0$ فتحة للأعلى | $a < 0$ فتحة للأسفل | $|a|>1$ أكثر ضيقاً | $|a|<1$ أكثر اتساعاً)</span>
+                        </div>
+
+                        <!-- Slider H -->
+                        <div>
+                            <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1">
+                                <span>الإزاحة الأفقية $h$:</span>
+                                <span id="val-h" class="font-mono bg-slate-200 px-2 py-0.5 rounded text-brand-700" dir="ltr">0</span>
+                            </div>
+                            <input type="range" id="slider-h" min="-5" max="5" step="0.5" value="0" oninput="updateGrapher()" class="w-full accent-brand-600">
+                            <span class="text-[11px] text-slate-500 block mt-0.5">($h > 0$ إزاحة لليمين | $h < 0$ إزاحة لليسار)</span>
+                        </div>
+
+                        <!-- Slider K -->
+                        <div>
+                            <div class="flex justify-between items-center text-xs font-semibold text-slate-700 mb-1">
+                                <span>الإزاحة الرأسية $k$:</span>
+                                <span id="val-k" class="font-mono bg-slate-200 px-2 py-0.5 rounded text-brand-700" dir="ltr">0</span>
+                            </div>
+                            <input type="range" id="slider-k" min="-5" max="5" step="0.5" value="0" oninput="updateGrapher()" class="w-full accent-brand-600">
+                            <span class="text-[11px] text-slate-500 block mt-0.5">($k > 0$ إزاحة للأعلى | $k < 0$ إزاحة للأسفل)</span>
+                        </div>
+
+                        <!-- Graph Properties Info Card -->
+                        <div class="bg-white p-4 rounded-lg border border-slate-200 space-y-2 text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-500">نقطة رأس المنحنى (Vertex):</span>
+                                <span id="prop-vertex" class="font-bold text-slate-800" dir="ltr">(0, 0)</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-500">معادلة محور التناظر:</span>
+                                <span id="prop-axis" class="font-bold text-slate-800" dir="ltr">$x = 0$</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-500">اتجاه فتحة القطع:</span>
+                                <span id="prop-dir" class="font-bold text-emerald-600">مفتوح للأعلى ⬆️</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-500">مقطع المحور الصادي ($y$-intercept):</span>
+                                <span id="prop-yintercept" class="font-bold text-slate-800" dir="ltr">(0, 0)</span>
+                            </div>
+                        </div>
+
+                        <button onclick="resetGrapherSliders()" class="w-full py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded font-medium text-xs transition">
+                            🔄 إعادة ضبط إلى الدالة الرئيسة $f(x)=x^2$
+                        </button>
+                    </div>
+
+                    <!-- Sharp Canvas Column -->
+                    <div class="lg:col-span-7 flex flex-col items-center">
+                        <div class="w-full bg-slate-900 rounded-xl p-3 shadow-lg flex flex-col items-center">
+                            <div class="text-xs text-slate-300 font-semibold mb-2 flex items-center justify-between w-full px-2">
+                                <span>المستوى الإحداثي التفاعلي الموضح بأرقام دقيقة</span>
+                                <span class="text-[10px] text-emerald-400">--- الدالة الرئيسة $x^2$ | ── الدالة المعدلة</span>
+                            </div>
+                            <canvas id="interactive-grapher-canvas" width="500" height="420" class="canvas-graph w-full max-w-[500px] h-[360px] sm:h-[420px]"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: SUMMARY & RESULTS REPORT -->
+        <section id="tab-summary" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">📊 تقرير الأداء الشامل والنتيجة</h3>
+                        <p class="text-xs text-slate-500">تحليل المهارات لمستويات إتقان الطالب لموضوعات الامتحان المقررة</p>
+                    </div>
+                    <button onclick="window.print()" class="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 text-xs font-semibold transition flex items-center space-x-1 space-x-reverse">
+                        <span>🖨️</span>
+                        <span>طباعة التقرير / حفظ كـ PDF</span>
+                    </button>
+                </div>
+
+                <!-- Metrics Overview -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">الدرجة الكلية</span>
+                        <span id="final-score" class="text-2xl font-extrabold text-brand-600" dir="ltr">0 / 35</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">النسبة المئوية</span>
+                        <span id="final-percentage" class="text-2xl font-extrabold text-slate-800" dir="ltr">0%</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">التقدير العام</span>
+                        <span id="final-rating" class="text-xl font-bold text-amber-600">-</span>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                        <span class="text-xs font-semibold text-slate-500 block mb-1">الزمن المستغرق</span>
+                        <span id="final-time" class="text-xl font-mono font-bold text-slate-700" dir="ltr">00:00</span>
+                    </div>
+                </div>
+
+                <!-- Analysis Chart and Subject Progress -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center my-8">
+                    <div class="md:col-span-6 flex flex-col items-center">
+                        <h4 class="text-sm font-bold text-slate-800 mb-3 text-center">مستوى الإتقان حسب الوحدات المقررة</h4>
+                        <div class="chart-container">
+                            <canvas id="performance-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-6 space-y-4">
+                        <h4 class="text-sm font-bold text-slate-800 mb-2">نسب الإتقان بالوحدات:</h4>
+
+                        <div class="space-y-4 text-xs">
+                            <div>
+                                <div class="flex justify-between font-semibold mb-1">
+                                    <span>الدوال التربيعية والتحويلات الهندسية (13 سؤالاً)</span>
+                                    <span id="cat-score-quad-func" dir="ltr">0%</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                    <div id="cat-bar-quad-func" class="bg-brand-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between font-semibold mb-1">
+                                    <span>حل المعادلات والمقادير الجبرية (22 سؤالاً)</span>
+                                    <span id="cat-score-quad-eq" dir="ltr">0%</span>
+                                </div>
+                                <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                    <div id="cat-bar-quad-eq" class="bg-emeraldCustom-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 text-xs mt-4">
+                            <strong>💡 توصية موجهة للتحسين:</strong>
+                            <p id="teacher-recommendation" class="mt-1">يرجى الإجابة على الأسئلة للحصول على التوصية الشاملة المخصصة لمستواك.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Questions Review Table -->
+                <div class="mt-8">
+                    <h4 class="text-sm font-bold text-slate-800 mb-4">جدول مراجعة جميع الأسئلة والإجابات الصحيحة (35 سؤالاً):</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-right border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">السؤال</th>
+                                    <th class="p-3">إجابة الطالب</th>
+                                    <th class="p-3">الإجابة الصحيحة</th>
+                                    <th class="p-3">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="review-table-body" class="divide-y divide-slate-100">
+                                <tr>
+                                    <td colspan="5" class="p-4 text-center text-slate-400">لم يتم إكمال الاختبار بعد.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 4: TEACHER SHARE PANEL -->
+        <section id="tab-teacher" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">🔗 لوحة المعلم - إرسال الاختبار ومشاركة الرابط للطلاب</h3>
+                <p class="text-xs text-slate-600 mb-6">
+                    قم بإعداد ونشر الرسالة المباشرة للطلاب لمشاركة بنك الأسئلة الـ 35 المحدث عبر مجموعات التعليم أو تطبيق الواتساب.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- WhatsApp Template -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <span>📱</span> رسالة الواتساب المباشرة للطلاب
+                        </h4>
+
+                        <textarea id="whatsapp-template-text" rows="10" class="w-full p-3 text-xs bg-white border border-slate-300 rounded-lg font-sans focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800">
+السلام عليكم ورحمة الله وبركاته، طلابي الأعزاء (الصف العاشر) 🌟
+
+إليكم رابط الاختبار التفاعلي المحدث لمنتصف الفصل - مادة الرياضيات 📐
+
+يتضمن الاختبار 35 سؤالاً مقسمة على موضوعات: الدوال التربيعية، والتحويلات الهندسية، والمقادير الجبرية، وحل المعادلات والمميز وإكمال المربع والقانون العام.
+
+🔗 رابط الاختبار المباشر:
+https://interactive-math-quiz-grade10.qatar.edu/
+
+💡 يُرجى كتابة الاسم والشعبة قبل البدء. نتمنى لكم التوفيق والتميز دائماً! 🌹
+                        </textarea>
+
+                        <div class="flex gap-2">
+                            <button onclick="copyWhatsAppMessage()" class="flex-1 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-semibold text-xs transition">
+                                📋 نسخ الرسالة
+                            </button>
+                            <button onclick="openWhatsAppShare()" class="flex-1 py-2 bg-emeraldCustom-500 hover:bg-emeraldCustom-600 text-white rounded-lg font-semibold text-xs transition">
+                                💬 إرسال عبر الواتساب
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Configuration & Export -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <span>⚙️</span> خيارات تصدير بنك الأسئلة
+                        </h4>
+
+                        <div class="space-y-3 text-xs">
+                            <label class="block font-medium text-slate-700">عنوان بنك الاختبار:</label>
+                            <input type="text" value="الاختبار الشامل 35 سؤالاً - رياضيات عاشر" class="w-full p-2 border rounded bg-white text-slate-800 font-sans">
+
+                            <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-[11px] leading-relaxed">
+                                <strong>تنبيه تقني:</strong> تم تصميم جميع الرسوم البيانية داخل التطبيق باستخدام محرك الرسم عالي الوضوح Canvas المباشر بدون الاعتماد على أي صور خارجية، مما يضمن فتح الاختبار بسرعة فائقة على أجهزة الطلاب والهواتف.
+                            </div>
+
+                            <button onclick="exportQuizStructure()" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-semibold text-xs transition">
+                                ⬇️ تحميل بنك الـ 35 سؤالاً كاملاً بصيغة JSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-xs text-center">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p>© 2026 منصة مراجعة الرياضيات التفاعلية - الصف العاشر - بنك 35 سؤالاً معززاً بالرسومات البيانية والقانون العام</p>
+            <p class="text-slate-500">تم التقديم بتصميم عصري لتسهيل الفهم والممارسة المستمرة للطلاب.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Core Logic -->
+    <script>
+        // QUESTION BANK: Exactly 35 Comprehensive Grade 10 Questions
+        const rawQuestions = [
+            // --- UNIT 1: QUADRATIC FUNCTIONS & TRANSFORMATIONS (13 Questions) ---
+            {
+                id: 1,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما وجه المقارنة بين التمثيل البياني للدالة التربيعية $g(x) = -0.7x^2$ والتمثيل البياني للدالة الرئيسة $f(x) = x^2$؟",
+                options: [
+                    "مفتوح للأسفل وأكثر اتساعاً",
+                    "مفتوح للأسفل وأقل اتساعاً",
+                    "مفتوح للأعلى وأكثر اتساعاً",
+                    "مفتوح للأعلى وأقل اتساعاً"
+                ],
+                correctIndex: 0,
+                explanation: "بما أن الإشارة سالبة ($a < 0$) فإن الفتحة تكون للأسفل. وبما أن $|a| = |-0.7| = 0.7 < 1$، فإن المنحنى يكون **أكثر اتساعاً** من الدالة الرئيسة."
+            },
+            {
+                id: 2,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "حدد أي الدوال التالية أكثر اتساعاً من الدالة التربيعية الرئيسة واتجاه فتحة القطع له للأسفل؟",
+                options: [
+                    "$f(x) = -7x^2$",
+                    "$f(x) = -0.05x^2$",
+                    "$f(x) = 0.05x^2$",
+                    "$f(x) = 7x^2$"
+                ],
+                correctIndex: 1,
+                explanation: "الفتحة للأسفل تتطلب $a < 0$، والأكثر اتساعاً تتطلب $|a| < 1$. وبالتالي تكون الدالة الصحيحة هي $f(x) = -0.05x^2$."
+            },
+            {
+                id: 3,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "حدد أي الدوال التالية أقل اتساعاً (أكثر ضيقاً) من الدالة التربيعية الرئيسة واتجاه فتحة القطع له للأسفل؟",
+                options: [
+                    "$f(x) = -2x^2$",
+                    "$f(x) = -0.2x^2$",
+                    "$f(x) = 0.2x^2$",
+                    "$f(x) = 2x^2$"
+                ],
+                correctIndex: 0,
+                explanation: "أقل اتساعاً تعني $|a| > 1$. والفتحة للأسفل تعني $a < 0$. بالتالي تكون الدالة هي $f(x) = -2x^2$."
+            },
+            {
+                id: 4,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما وجه المقارنة بين التمثيل البياني للدالة $g(x) = x^2 - 7$ والتمثيل البياني للدالة الرئيسة $f(x) = x^2$؟",
+                options: [
+                    "إزاحة المنحنى 7 وحدات للأعلى",
+                    "إزاحة المنحنى 7 وحدات للأسفل",
+                    "إزاحة المنحنى 7 وحدات لليسار",
+                    "إزاحة المنحنى 7 وحدات لليمين"
+                ],
+                correctIndex: 1,
+                explanation: "التغير $k = -7$ يمثل إزاحة رأسية للمنحنى بمقدار 7 وحدات للأسفل."
+            },
+            {
+                id: 5,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما وجه المقارنة بين التمثيل البياني للدالة $g(x) = (x + 5)^2$ والتمثيل البياني للدالة الرئيسة $f(x) = x^2$؟",
+                options: [
+                    "إزاحة المنحنى 5 وحدات للأعلى",
+                    "إزاحة المنحنى 5 وحدات للأسفل",
+                    "إزاحة المنحنى 5 وحدات لليسار",
+                    "إزاحة المنحنى 5 وحدات لليمين"
+                ],
+                correctIndex: 2,
+                explanation: "الصيغة $(x - h)^2$ تصبح $(x - (-5))^2$ أي $h = -5$، وتدل على إزاحة أفقية لليسار بمقدار 5 وحدات."
+            },
+            {
+                id: 6,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما هي نقطة رأس المنحنى للدالة التربيعية $g(x) = -12(x - 9)^2 - 7$؟",
+                options: [
+                    "$(-9, -7)$",
+                    "$(9, -7)$",
+                    "$(9, 7)$",
+                    "$(-9, 7)$"
+                ],
+                correctIndex: 1,
+                explanation: "نقطة رأس المنحنى بالصيغة القياسية $a(x-h)^2 + k$ هي $(h, k)$. هنا $h = 9$ و $k = -7$، فيكون الرأس $(9, -7)$."
+            },
+            {
+                id: 7,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "إذا كان $g(x) = -4(x - 1)^2 + 7$ يمثل ارتفاع صخرة بالأمتار بعد $x$ ثانية، فما هو أقصى ارتفاع تصل إليه الصخرة؟",
+                options: [
+                    "4 أمتار",
+                    "1 متر",
+                    "7 أمتار",
+                    "11 متراً"
+                ],
+                correctIndex: 2,
+                explanation: "أقصى ارتفاع يمثله الإحداثي $y$ لنقطة الرأس $(h, k) = (1, 7)$، وهو القيمة العظمى $k = 7$ أمتار."
+            },
+            {
+                id: 8,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "قارن بين التمثيل البياني للدالة $g(x) = 3x^2 + 4$ والتمثيل البياني للدالة الرئيسة $f(x) = x^2$؟",
+                options: [
+                    "أقل اتساعاً (أكثر ضيقاً) وإزاحة 4 وحدات للأعلى",
+                    "أكثر اتساعاً وإزاحة 4 وحدات للأسفل",
+                    "أقل اتساعاً وإزاحة 4 وحدات لليمين",
+                    "أكثر اتساعاً وإزاحة 4 وحدات لليسار"
+                ],
+                correctIndex: 0,
+                explanation: "المعامل $a=3 > 1$ يجعل المنحنى أقل اتساعاً (أكثر ضيقاً)، والثابت $k=+4$ يسبب إزاحة رأسية بمقدار 4 وحدات للأعلى."
+            },
+            {
+                id: 9,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما هي نقطة رأس المنحنى ومعادلة محور التناظر للدالة $f(x) = 0.5(x + 3)^2 + 8$؟",
+                options: [
+                    "الرأس $(3, 8)$ ومحور التناظر $x = 3$",
+                    "الرأس $(-3, 8)$ ومحور التناظر $x = -3$",
+                    "الرأس $(-3, -8)$ ومحور التناظر $x = 8$",
+                    "الرأس $(3, -8)$ ومحور التناظر $x = -8$"
+                ],
+                correctIndex: 1,
+                explanation: "بما أن $(x + 3) = (x - (-3))$، فإن $h = -3$ و $k = 8$. الرأس هو $(-3, 8)$ ومعادلة محور التناظر هي $x = -3$."
+            },
+            {
+                id: 10,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما التحويلات الهندسية المطبقة على $f(x) = x^2$ للحصول على الدالة $g(x) = (x - 6)^2 - 2$؟",
+                options: [
+                    "إزاحة 6 وحدات لليمين و 2 وحدات للأسفل",
+                    "إزاحة 6 وحدات لليسار و 2 وحدات للأعلى",
+                    "إزاحة 6 وحدات للأعلى و 2 وحدات لليمين",
+                    "إزاحة 6 وحدات للأسفل و 2 وحدات لليسار"
+                ],
+                correctIndex: 0,
+                explanation: "$h = 6$ يمثل إزاحة لليمين بمقدار 6 وحدات، و $k = -2$ يمثل إزاحة للأسفل بمقدار وحدتين."
+            },
+            {
+                id: 11,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما هي معادلة محور التناظر للدالة التربيعية $f(x) = -2(x - 4)^2 + 10$؟",
+                options: [
+                    "$x = -4$",
+                    "$x = 4$",
+                    "$x = 10$",
+                    "$x = -2$"
+                ],
+                correctIndex: 1,
+                explanation: "معادلة محور التناظر دائماً هي $x = h$. في هذه الدالة $h = 4$، بالتالي معادلة محور التناظر هي $x = 4$."
+            },
+            {
+                id: 12,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "ما هي القيمة الصغرى للدالة التربيعية $f(x) = 2(x + 1)^2 - 5$ وعند أي قيمة لـ $x$ تحدث؟",
+                options: [
+                    "القيمة الصغرى هي $-5$ عند $x = -1$",
+                    "القيمة الصغرى هي $5$ عند $x = 1$",
+                    "القيمة الصغرى هي $-1$ عند $x = -5$",
+                    "القيمة الصغرى هي $2$ عند $x = -1$"
+                ],
+                correctIndex: 0,
+                explanation: "في صيغة الرأس $a(x-h)^2 + k$، رأس المنحنى هو $(-1, -5)$. وبما أن $a=2 > 0$ فالقيمة الصغرى هي $k = -5$ وتحدث عند $x = h = -1$."
+            },
+            {
+                id: 13,
+                category: "quadratic_functions",
+                categoryName: "الدوال التربيعية والتحويلات الهندسية",
+                question: "أي من الدالتين أكثر اتساعاً: $y_1 = 0.25x^2$ أم $y_2 = 4x^2$؟ ولماذا؟",
+                options: [
+                    "$y_1$ لأن $|0.25| < 1$",
+                    "$y_2$ لأن $|4| > 1$",
+                    "الدالتان لهما نفس الاتساع",
+                    "$y_2$ لأن $4 > 0.25$"
+                ],
+                correctIndex: 0,
+                explanation: "كلما صغرت قيمة $|a|$ بين $0$ و $1$ كلما كان المنحنى أكثر اتساعاً. وبما أن $0.25 < 1$، فإن $y_1$ هي الأكثر اتساعاً."
+            },
+
+            // --- UNIT 2: QUADRATIC EQUATIONS & ALGEBRAIC EXPRESSIONS (22 Questions) ---
+            {
+                id: 14,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما هي حلول المعادلة التربيعية $(x - 5)(x + 4) = 0$؟",
+                options: [
+                    "$x = 5, x = 4$",
+                    "$x = 5, x = -4$",
+                    "$x = -5, x = 4$",
+                    "$x = -5, x = -4$"
+                ],
+                correctIndex: 1,
+                explanation: "باستخدام خاصية الضرب الصفري: إما $x - 5 = 0 \\Rightarrow x = 5$ أو $x + 4 = 0 \\Rightarrow x = -4$."
+            },
+            {
+                id: 15,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما حلول المعادلة التربيعية $(4x - 8)(x - 3) = 0$؟",
+                options: [
+                    "$x = -8, x = -3$",
+                    "$x = 8, x = 3$",
+                    "$x = 2, x = 3$",
+                    "$x = -2, x = 3$"
+                ],
+                correctIndex: 2,
+                explanation: "$4x - 8 = 0 \\Rightarrow 4x = 8 \\Rightarrow x = 2$. والحد الثاني $x - 3 = 0 \\Rightarrow x = 3$."
+            },
+            {
+                id: 16,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما هي حلول المعادلة $x^2 - 10x + 21 = 0$ بالتحليل إلى العوامل؟",
+                options: [
+                    "$x = 3, x = 7$",
+                    "$x = -3, x = -7$",
+                    "$x = -3, x = 7$",
+                    "$x = 1, x = 21$"
+                ],
+                correctIndex: 0,
+                explanation: "نبحث عن عددين حاصل ضربهما $+21$ ومجموعهما $-10$ وهما $-3$ و $-7$. بالتالي: $(x - 3)(x - 7) = 0 \\Rightarrow x = 3, x = 7$."
+            },
+            {
+                id: 17,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما قيمة مميّز المعادلة التربيعية $x^2 - x - 3 = 0$؟",
+                options: [
+                    "$-13$",
+                    "$-3$",
+                    "$0$",
+                    "$13$"
+                ],
+                correctIndex: 3,
+                explanation: "المميز $\\Delta = b^2 - 4ac$. هنا $a=1, b=-1, c=-3$. $\\Delta = (-1)^2 - 4(1)(-3) = 1 + 12 = 13$."
+            },
+            {
+                id: 18,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "إذا كانت قيمة المميّز لمعادلة تربيعية تساوي $-10$، فما عدد حلول هذه المعادلة الحقيقية؟",
+                options: [
+                    "يوجد حلان حقيقيان مختلفان",
+                    "يوجد حل حقيقي واحد مكرر",
+                    "لا يوجد أي حلول حقيقية",
+                    "يوجد ثلاثة حلول حقيقية"
+                ],
+                correctIndex: 2,
+                explanation: "عندما تكون قيمة المميز سالبة ($\\Delta < 0$)، لا توجد أي حلول حقيقية للمعادلة التربيعية."
+            },
+            {
+                id: 19,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما قيمة الثابت $c$ التي تجعل المقدار $x^2 + 8x + c$ مربعاً كاملاً؟",
+                options: [
+                    "$4$",
+                    "$8$",
+                    "$16$",
+                    "$64$"
+                ],
+                correctIndex: 2,
+                explanation: "إكمال المربع: $c = \\left(\\frac{b}{2}\\right)^2 = \\left(\\frac{8}{2}\\right)^2 = 4^2 = 16$."
+            },
+            {
+                id: 20,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما قيمة الثابت $c$ التي تجعل المقدار $x^2 - 14x + c$ مربعاً كاملاً؟",
+                options: [
+                    "$-28$",
+                    "$-14$",
+                    "$49$",
+                    "$98$"
+                ],
+                correctIndex: 2,
+                explanation: "$c = \\left(\\frac{-14}{2}\\right)^2 = (-7)^2 = 49$."
+            },
+            {
+                id: 21,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "من خلال الرسم البياني الموضح أدناه للدالة $f(x)$، ما هي حلول المعادلة $f(x) = 0$؟",
+                options: [
+                    "$x = -1, x = 3$",
+                    "$x = 1, x = -3$",
+                    "$x = 0, x = 3$",
+                    "$x = -1, x = 0$"
+                ],
+                correctIndex: 0,
+                explanation: "حلول المعادلة $f(x) = 0$ هي تقاطعات المنحنى مع المحور $x$ (المقاطع السينبة). يظهر في الرسم التقاطع عند $x = -1$ و $x = 3$."
+            },
+            {
+                id: 22,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما هي حلول المعادلة $x^2 + 7x + 12 = 0$ بالتحليل إلى العوامل؟",
+                options: [
+                    "$x = 3, x = 4$",
+                    "$x = -3, x = -4$",
+                    "$x = -3, x = 4$",
+                    "$x = 2, x = 6$"
+                ],
+                correctIndex: 1,
+                explanation: "التحليل إلى عوامل: $(x + 3)(x + 4) = 0$. بالتالي الحلول هي $x = -3$ و $x = -4$."
+            },
+            {
+                id: 23,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما نوع وعدد حلول المعادلة التربيعية $2x^2 - 4x + 2 = 0$ باستخدام المميّز؟",
+                options: [
+                    "حل حقيقي واحد مكرر (لأن $\\Delta = 0$)",
+                    "حلان حقيقيان مختلفان (لأن $\\Delta > 0$)",
+                    "لا توجد حلول حقيقية (لأن $\\Delta < 0$)",
+                    "ثلاثة حلول حقيقية"
+                ],
+                correctIndex: 0,
+                explanation: "المميز $\\Delta = b^2 - 4ac = (-4)^2 - 4(2)(2) = 16 - 16 = 0$. عندما يكون المميز صفراً، يوجد حل حقيقي واحد مكرر."
+            },
+            {
+                id: 24,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما قيمة الثابت $c$ التي تجعل المقدار $x^2 - 10x + c$ مربعاً كاملاً؟",
+                options: [
+                    "$10$",
+                    "$20$",
+                    "$25$",
+                    "$100$"
+                ],
+                correctIndex: 2,
+                explanation: "$c = \\left(\\frac{-10}{2}\\right)^2 = (-5)^2 = 25$."
+            },
+            {
+                id: 25,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما قيمة الثابت $c$ التي تجعل المقدار $x^2 + 18x + c$ مربعاً كاملاً؟",
+                options: [
+                    "$9$",
+                    "$36$",
+                    "$81$",
+                    "$324$"
+                ],
+                correctIndex: 2,
+                explanation: "$c = \\left(\\frac{18}{2}\\right)^2 = (9)^2 = 81$."
+            },
+            {
+                id: 26,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "استخدم **القانون العام** $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$ لحل المعادلة التربيعية $x^2 - 5x + 6 = 0$، ما هي الحلول؟",
+                options: [
+                    "$x = 3, x = 2$",
+                    "$x = -3, x = -2$",
+                    "$x = 5, x = 6$",
+                    "$x = -5, x = 1$"
+                ],
+                correctIndex: 0,
+                explanation: "المعاملات: $a=1, b=-5, c=6$. بالتعويض بالقانون العام نجد $\\Delta = 1$ وتكون الحلول $x = \\frac{5 \\pm 1}{2}$ أي $x = 3$ و $x = 2$."
+            },
+            {
+                id: 27,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما هي حلول المعادلة التربيعية $2x^2 + 5x - 3 = 0$ باستخدام **القانون العام** $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$؟",
+                options: [
+                    "$x = 0.5, x = -3$",
+                    "$x = -0.5, x = 3$",
+                    "$x = 2, x = -3$",
+                    "$x = 1, x = -6$"
+                ],
+                correctIndex: 0,
+                explanation: "المعاملات: $a=2, b=5, c=-3$. بالتعويض في القانون العام: $x = \\frac{-5 \\pm \\sqrt{49}}{4}$. الحل الأول: $x = \\frac{2}{4} = 0.5$ والحل الثاني: $x = \\frac{-12}{4} = -3$."
+            },
+            {
+                id: 28,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما هي حلول المعادلة $(x - 2)^2 = 16$ باستخدام الخاصية الجذرية للتربيع؟",
+                options: [
+                    "$x = 6, x = -2$",
+                    "$x = 4, x = -4$",
+                    "$x = 18, x = -14$",
+                    "$x = 8, x = -2$"
+                ],
+                correctIndex: 0,
+                explanation: "بأخذ الجذر التربيعي للطرفين: $x - 2 = \\pm 4$. فتكون $x = 2 + 4 = 6$ أو $x = 2 - 4 = -2$."
+            },
+            {
+                id: 29,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما حلول المعادلة التربيعية $(2x-6)(x+5)=0$؟",
+                options: [
+                    "$x = 3, x = -5$",
+                    "$x = -3, x = 5$",
+                    "$x = 6, x = -5$",
+                    "$x = -6, x = 5$"
+                ],
+                correctIndex: 0,
+                explanation: "بمساواة كل عامل بالصفر: $2x-6=0 \\Rightarrow 2x=6 \\Rightarrow x=3$. والعامل الآخر: $x+5=0 \\Rightarrow x=-5$."
+            },
+            {
+                id: 30,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما حلول المعادلة التربيعية $3(5x-5)(2x+4)=0$؟",
+                options: [
+                    "$x = 1, x = -2$",
+                    "$x = -1, x = 2$",
+                    "$x = 5, x = -4$",
+                    "$x = -5, x = 4$"
+                ],
+                correctIndex: 0,
+                explanation: "المعامل 3 لا يساوي صفر. $5x-5=0 \\Rightarrow 5x=5 \\Rightarrow x=1$. و $2x+4=0 \\Rightarrow 2x=-4 \\Rightarrow x=-2$."
+            },
+            {
+                id: 31,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "أي من المقادير التالية يكافئ المقدار $5^x \\times 5^x$؟",
+                options: [
+                    "$5^{2x}$",
+                    "$25^{2x}$",
+                    "$10^{x}$",
+                    "$5^{x^2}$"
+                ],
+                correctIndex: 0,
+                explanation: "عند ضرب الأساسات المتشابهة نجمع الأسس: $5^x \\times 5^x = 5^{x+x} = 5^{2x}$."
+            },
+            {
+                id: 32,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "أي من المقادير التالية يكافئ المقدار $\\sqrt{8x^3} \\times \\sqrt{2x}$؟ (بافتراض $x \\ge 0$)",
+                options: [
+                    "$4x^2$",
+                    "$16x^4$",
+                    "$8x^2$",
+                    "$4x^4$"
+                ],
+                correctIndex: 0,
+                explanation: "نضرب ما بداخل الجذور: $\\sqrt{8x^3 \\times 2x} = \\sqrt{16x^4}$. وجذر $16$ هو $4$ وجذر $x^4$ هو $x^2$، فالناتج $4x^2$."
+            },
+            {
+                id: 33,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "أي من المقادير التالية يكافئ المقدار $\\sqrt{9x^8}$؟",
+                options: [
+                    "$3x^4$",
+                    "$9x^4$",
+                    "$3x^8$",
+                    "$4.5x^4$"
+                ],
+                correctIndex: 0,
+                explanation: "نأخذ الجذر التربيعي للمعامل وهو $\\sqrt{9}=3$، ونقسم أس المتغير على 2: $8 \\div 2 = 4$. الناتج هو $3x^4$."
+            },
+            {
+                id: 34,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما هي حلول المعادلة $x^2 - 12x + 20 = 0$ بالتحليل إلى العوامل؟",
+                options: [
+                    "$x = 2, x = 10$",
+                    "$x = -2, x = -10$",
+                    "$x = -2, x = 10$",
+                    "$x = 4, x = 5$"
+                ],
+                correctIndex: 0,
+                explanation: "نبحث عن عددين ضربهما 20 ومجموعهما -12 وهما -2 و -10. إذن $(x-2)(x-10)=0$، ومنه $x=2, x=10$."
+            },
+            {
+                id: 35,
+                category: "quadratic_equations",
+                categoryName: "حل المعادلات والمقادير الجبرية",
+                question: "ما القيمة التي يجب إضافتها لطرفي المعادلة $x^2 - 14x = -16$ لإكمال المربع؟",
+                options: [
+                    "$49$",
+                    "$7$",
+                    "$-49$",
+                    "$196$"
+                ],
+                correctIndex: 0,
+                explanation: "نأخذ نصف معامل $x$ وهو $\\frac{-14}{2}=-7$ ثم نربعه $(-7)^2 = 49$. تضاف $49$ للطرفين."
+            }
+        ];
+
+        // Global State Variables
+        let userAnswers = {};
+        let filteredQuestions = [...rawQuestions];
+        let timerInterval = null;
+        let secondsElapsed = 0;
+        let performanceChartInstance = null;
+
+        // Init on DOM ready
+        document.addEventListener("DOMContentLoaded", () => {
+            renderQuestions();
+            startTimer();
+            initGrapherCanvas();
+            renderKaTeX();
+        });
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            ['quiz', 'grapher', 'summary', 'teacher'].forEach(id => {
+                const tabEl = document.getElementById(`tab-${id}`);
+                const navEl = document.getElementById(`nav-${id}`);
+
+                if (id === tabId) {
+                    tabEl.classList.remove('hidden');
+                    if (navEl) {
+                        navEl.classList.add('text-brand-400', 'bg-slate-800', 'font-semibold');
+                        navEl.classList.remove('text-slate-300');
+                    }
+                } else {
+                    tabEl.classList.add('hidden');
+                    if (navEl) {
+                        navEl.classList.remove('text-brand-400', 'bg-slate-800', 'font-semibold');
+                        navEl.classList.add('text-slate-300');
+                    }
+                }
+            });
+
+            if (tabId === 'grapher') {
+                setTimeout(updateGrapher, 50);
+            } else if (tabId === 'summary') {
+                generateSummaryReport();
+            }
+            renderKaTeX();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Question Cards
+        function renderQuestions() {
+            const container = document.getElementById("questions-container");
+            container.innerHTML = "";
+
+            if (filteredQuestions.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-500 bg-white rounded-xl">لا توجد أسئلة تطابق التصنيف المختار.</div>`;
+                return;
+            }
+
+            filteredQuestions.forEach((q, index) => {
+                const isAnswered = userAnswers.hasOwnProperty(q.id);
+                const selectedIdx = userAnswers[q.id];
+                const showInstant = document.getElementById("instant-feedback-toggle").checked;
+
+                const qCard = document.createElement("div");
+                qCard.className = "bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-slate-200 space-y-4 transition-all duration-200 hover:border-slate-300";
+                qCard.id = `q-card-${q.id}`;
+
+                // Header
+                let cardHtml = `
+                    <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <span class="w-7 h-7 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center font-mono">${index + 1}</span>
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">${q.categoryName}</span>
+                        </div>
+                        <span id="badge-status-${q.id}" class="text-xs font-medium px-2 py-0.5 rounded ${isAnswered ? 'bg-blue-50 text-blue-700 font-semibold' : 'bg-slate-100 text-slate-400'}">
+                            ${isAnswered ? 'تمت الإجابة' : 'غير مجاب'}
+                        </span>
+                    </div>
+
+                    <!-- Question Text -->
+                    <div class="text-sm sm:text-base font-semibold text-slate-900 pt-1 leading-relaxed">
+                        ${q.question}
+                    </div>
+                `;
+
+                // Embed sharp visual canvas for specific visual questions
+                if ([1, 4, 6, 10, 21].includes(q.id)) {
+                    cardHtml += `
+                        <div class="my-3 flex flex-col items-center">
+                            <div class="text-[11px] text-slate-500 mb-1 font-semibold">📍 رسم بياني توضيحي موضح بالأرقام للسؤال:</div>
+                            <canvas id="q-canvas-${q.id}" width="360" height="220" class="canvas-graph w-full max-w-[360px] h-[220px]"></canvas>
+                        </div>
+                    `;
+                }
+
+                // Options List
+                cardHtml += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">`;
+                q.options.forEach((opt, optIdx) => {
+                    let btnStyle = "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300";
+
+                    if (isAnswered) {
+                        if (selectedIdx === optIdx) {
+                            if (showInstant) {
+                                btnStyle = optIdx === q.correctIndex
+                                    ? "bg-emerald-50 border-emerald-500 text-emerald-900 font-bold ring-1 ring-emerald-500"
+                                    : "bg-rose-50 border-rose-400 text-rose-900 font-bold ring-1 ring-rose-400";
+                            } else {
+                                btnStyle = "bg-brand-50 border-brand-500 text-brand-900 font-bold ring-1 ring-brand-500";
+                            }
+                        } else if (showInstant && optIdx === q.correctIndex) {
+                            btnStyle = "bg-emerald-50 border-emerald-400 text-emerald-800 font-semibold";
+                        }
+                    }
+
+                    cardHtml += `
+                        <button onclick="selectOption(${q.id}, ${optIdx})" class="p-3 rounded-lg border text-right text-xs sm:text-sm transition-all duration-150 flex items-center justify-between ${btnStyle}">
+                            <span dir="ltr" class="text-right w-full block">${opt}</span>
+                            <span class="text-xs font-mono opacity-60 mr-2">[${String.fromCharCode(65 + optIdx)}]</span>
+                        </button>
+                    `;
+                });
+                cardHtml += `</div>`;
+
+                // Feedback Banner
+                if (showInstant && isAnswered) {
+                    const isCorrect = selectedIdx === q.correctIndex;
+                    cardHtml += `
+                        <div class="mt-3 p-3 rounded-lg text-xs ${isCorrect ? 'bg-emerald-50 border border-emerald-200 text-emerald-900' : 'bg-rose-50 border border-rose-200 text-rose-900'} space-y-1">
+                            <div class="font-bold flex items-center gap-1">
+                                <span>${isCorrect ? '✅ إجابة صحيحة!' : '❌ إجابة غير صحيحة.'}</span>
+                            </div>
+                            <p class="leading-relaxed text-slate-700">${q.explanation}</p>
+                        </div>
+                    `;
+                }
+
+                qCard.innerHTML = cardHtml;
+                container.appendChild(qCard);
+
+                // Draw question minigraphs after DOM render
+                if ([1, 4, 6, 10, 21].includes(q.id)) {
+                    setTimeout(() => drawQuestionMiniGraph(q.id), 40);
+                }
+            });
+
+            updateProgressBar();
+            renderKaTeX();
+        }
+
+        // Option Selector
+        function selectOption(qId, optIndex) {
+            userAnswers[qId] = optIndex;
+            renderQuestions();
+        }
+
+        // Filter Category
+        function filterQuestions() {
+            const cat = document.getElementById("category-filter").value;
+            if (cat === "all") {
+                filteredQuestions = [...rawQuestions];
+            } else {
+                filteredQuestions = rawQuestions.filter(q => q.category === cat);
+            }
+            renderQuestions();
+        }
+
+        // Timer Logic
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            secondsElapsed = 0;
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                document.getElementById("quiz-timer").innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // Progress Bar Update
+        function updateProgressBar() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const total = rawQuestions.length;
+            const percentage = Math.round((answeredCount / total) * 100);
+
+            document.getElementById("progress-text").innerText = `${answeredCount} / ${total}`;
+            document.getElementById("progress-bar").style.width = `${percentage}%`;
+
+            let correctCount = 0;
+            rawQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.correctIndex) correctCount++;
+            });
+            document.getElementById("score-badge").innerText = `الدرجة الحالية: ${correctCount} / ${total}`;
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            if (confirm("هل أنت تأكد من إحساس إعادة بدء الاختبار؟ سيتم مسح الإجابات والبدء من جديد.")) {
+                userAnswers = {};
+                startTimer();
+                renderQuestions();
+            }
+        }
+
+        // Submit Quiz
+        function submitQuiz() {
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < rawQuestions.length) {
+                if (!confirm(`لقد أجبت على ${answeredCount} من أصل ${rawQuestions.length} سؤالاً. هل تريد إكمال التسليم واستعراض تقرير النتيجة الآن؟`)) {
+                    return;
+                }
+            }
+            switchTab('summary');
+        }
+
+        // Render KaTeX Math Formulas
+        function renderKaTeX() {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ],
+                    throwOnError : false
+                });
+            }
+        }
+
+        // -------------------------------------------------------------
+        // HIGH-DPI SHARP CANVAS GRAPHING ENGINE WITH CLEAR NUMBERS
+        // -------------------------------------------------------------
+
+        function setupSharpCanvas(canvas) {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            const displayWidth = rect.width || canvas.width;
+            const displayHeight = rect.height || canvas.height;
+
+            if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+                canvas.width = displayWidth * dpr;
+                canvas.height = displayHeight * dpr;
+            }
+
+            const ctx = canvas.getContext("2d");
+            ctx.resetTransform();
+            ctx.scale(dpr, dpr);
+            return { ctx, width: displayWidth, height: displayHeight };
+        }
+
+        function drawQuadraticGraphClear(canvasId, a, h, k, options = {}) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+
+            const { ctx, width, height } = setupSharpCanvas(canvas);
+
+            ctx.clearRect(0, 0, width, height);
+
+            const originX = width / 2;
+            const originY = height / 2;
+            const scale = options.scale || 22; // Pixels per grid unit
+
+            // 1. Grid Background
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, height);
+
+            // Minor Grid Lines
+            ctx.strokeStyle = "#f1f5f9";
+            ctx.lineWidth = 1;
+            for (let x = originX % scale; x < width; x += scale) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+            }
+            for (let y = originY % scale; y < height; y += scale) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+            }
+
+            // Major Axes (X and Y)
+            ctx.strokeStyle = "#334155";
+            ctx.lineWidth = 2;
+            // X-Axis
+            ctx.beginPath(); ctx.moveTo(0, originY); ctx.lineTo(width, originY); ctx.stroke();
+            // Y-Axis
+            ctx.beginPath(); ctx.moveTo(originX, 0); ctx.lineTo(originX, height); ctx.stroke();
+
+            // Arrowheads on Axes
+            ctx.fillStyle = "#334155";
+            ctx.beginPath(); ctx.moveTo(width - 6, originY - 4); ctx.lineTo(width, originY); ctx.lineTo(width - 6, originY + 4); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(originX - 4, 6); ctx.lineTo(originX, 0); ctx.lineTo(originX + 4, 6); ctx.fill();
+
+            // 2. Axis Ticks & CLEAR NUMBERS
+            ctx.font = "bold 10px Segoe UI, sans-serif";
+            ctx.fillStyle = "#475569";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+
+            // X-Axis Ticks & Numbers
+            const maxUnitsX = Math.floor((width / 2) / scale);
+            for (let i = -maxUnitsX; i <= maxUnitsX; i++) {
+                if (i === 0) continue;
+                const px = originX + i * scale;
+                ctx.beginPath(); ctx.moveTo(px, originY - 3); ctx.lineTo(px, originY + 3); ctx.stroke();
+                ctx.fillText(i.toString(), px, originY + 5);
+            }
+
+            // Y-Axis Ticks & Numbers
+            ctx.textAlign = "right";
+            ctx.textBaseline = "middle";
+            const maxUnitsY = Math.floor((height / 2) / scale);
+            for (let j = -maxUnitsY; j <= maxUnitsY; j++) {
+                if (j === 0) continue;
+                const py = originY - j * scale;
+                ctx.beginPath(); ctx.moveTo(originX - 3, py); ctx.lineTo(originX + 3, py); ctx.stroke();
+                ctx.fillText(j.toString(), originX - 6, py);
+            }
+
+            // Origin Label (0,0)
+            ctx.textAlign = "right";
+            ctx.textBaseline = "top";
+            ctx.fillText("0", originX - 4, originY + 4);
+
+            // 3. Draw Reference Curve f(x) = x^2 in Dashed Green (if enabled)
+            if (options.showBase !== false) {
+                ctx.setLineDash([4, 4]);
+                ctx.strokeStyle = "#10b981";
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                let first = true;
+                for (let px = -originX; px <= originX; px += 2) {
+                    let xVal = px / scale;
+                    let yVal = Math.pow(xVal, 2);
+                    let cX = originX + px;
+                    let cY = originY - (yVal * scale);
+                    if (first) { ctx.moveTo(cX, cY); first = false; }
+                    else ctx.lineTo(cX, cY);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // 4. Draw Transformed Parabola Curve
+            ctx.strokeStyle = "#0284c7";
+            ctx.lineWidth = 2.8;
+            ctx.beginPath();
+            let start = true;
+            for (let px = -originX; px <= originX; px += 1) {
+                let xVal = px / scale;
+                let yVal = a * Math.pow(xVal - h, 2) + k;
+                let cX = originX + (xVal * scale);
+                let cY = originY - (yVal * scale);
+
+                if (cY >= -20 && cY <= height + 20) {
+                    if (start) { ctx.moveTo(cX, cY); start = false; }
+                    else ctx.lineTo(cX, cY);
+                }
+            }
+            ctx.stroke();
+
+            // 5. Draw Axis of Symmetry
+            const vertexCanvasX = originX + (h * scale);
+            const vertexCanvasY = originY - (k * scale);
+
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = "#ef4444";
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(vertexCanvasX, 0);
+            ctx.lineTo(vertexCanvasX, height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 6. Highlight Vertex Point (h, k) with Text Callout
+            ctx.fillStyle = "#dc2626";
+            ctx.beginPath();
+            ctx.arc(vertexCanvasX, vertexCanvasY, 5, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Vertex Coordinate Text
+            ctx.fillStyle = "#991b1b";
+            ctx.font = "bold 11px Segoe UI, sans-serif";
+            ctx.textAlign = h >= 0 ? "left" : "right";
+            const textOffsetX = h >= 0 ? 8 : -8;
+            ctx.fillText(`(${h}, ${k})`, vertexCanvasX + textOffsetX, vertexCanvasY - 8);
+        }
+
+        // Interactive Grapher Update
+        function updateGrapher() {
+            const a = parseFloat(document.getElementById("slider-a").value);
+            const h = parseFloat(document.getElementById("slider-h").value);
+            const k = parseFloat(document.getElementById("slider-k").value);
+
+            document.getElementById("val-a").innerText = a;
+            document.getElementById("val-h").innerText = h;
+            document.getElementById("val-k").innerText = k;
+
+            document.getElementById("prop-vertex").innerText = `(${h}, ${k})`;
+            document.getElementById("prop-axis").innerText = `$x = ${h}$`;
+            document.getElementById("prop-dir").innerText = a > 0 ? "مفتوح للأعلى ⬆️" : (a < 0 ? "مفتوح للأسفل ⬇️" : "خط أفقي");
+
+            const yInt = (a * Math.pow(-h, 2) + k).toFixed(1);
+            document.getElementById("prop-yintercept").innerText = `(0, ${yInt})`;
+
+            let signH = h >= 0 ? `- ${h}` : `+ ${Math.abs(h)}`;
+            let signK = k >= 0 ? `+ ${k}` : `- ${Math.abs(k)}`;
+            document.getElementById("grapher-equation-display").innerHTML = `$f(x) = ${a}(x ${signH})^2 ${signK}$`;
+
+            drawQuadraticGraphClear("interactive-grapher-canvas", a, h, k, { scale: 24, showBase: true });
+            renderKaTeX();
+        }
+
+        function resetGrapherSliders() {
+            document.getElementById("slider-a").value = 1;
+            document.getElementById("slider-h").value = 0;
+            document.getElementById("slider-k").value = 0;
+            updateGrapher();
+        }
+
+        function initGrapherCanvas() {
+            updateGrapher();
+        }
+
+        // Mini Graphs for specific visual questions
+        function drawQuestionMiniGraph(qId) {
+            const canvasId = `q-canvas-${qId}`;
+            if (qId === 1) drawQuadraticGraphClear(canvasId, -0.7, 0, 0, { scale: 22 });
+            else if (qId === 4) drawQuadraticGraphClear(canvasId, 1, 0, -7, { scale: 16 });
+            else if (qId === 6) drawQuadraticGraphClear(canvasId, -1, 9, -7, { scale: 12 });
+            else if (qId === 10) drawQuadraticGraphClear(canvasId, 1, 6, -2, { scale: 18 });
+            else if (qId === 21) drawQuadraticGraphClear(canvasId, 1, 1, -4, { scale: 22 });
+        }
+
+        // -------------------------------------------------------------
+        // TAB 3: SUMMARY REPORT & PERFORMANCE ANALYTICS
+        // -------------------------------------------------------------
+        function generateSummaryReport() {
+            const total = rawQuestions.length;
+            let correct = 0;
+            const categoryStats = {
+                quadratic_functions: { total: 0, correct: 0, name: "الدوال التربيعية والتحويلات" },
+                quadratic_equations: { total: 0, correct: 0, name: "المعادلات والمقادير الجبرية" }
+            };
+
+            const reviewTbody = document.getElementById("review-table-body");
+            reviewTbody.innerHTML = "";
+
+            rawQuestions.forEach((q, idx) => {
+                const userChoice = userAnswers[q.id];
+                const isCorrect = userChoice === q.correctIndex;
+
+                if (categoryStats[q.category]) {
+                    categoryStats[q.category].total++;
+                    if (isCorrect) {
+                        correct++;
+                        categoryStats[q.category].correct++;
+                    }
+                }
+
+                const userAnsText = userChoice !== undefined ? q.options[userChoice] : "غير مجاب";
+                const correctAnsText = q.options[q.correctIndex];
+
+                const tr = document.createElement("tr");
+                tr.className = isCorrect ? "bg-emerald-50/40" : (userChoice === undefined ? "bg-slate-50" : "bg-rose-50/40");
+                tr.innerHTML = `
+                    <td class="p-3 font-mono font-bold">${idx + 1}</td>
+                    <td class="p-3">${q.question}</td>
+                    <td class="p-3 font-semibold ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}" dir="ltr">${userAnsText}</td>
+                    <td class="p-3 font-semibold text-emerald-800" dir="ltr">${correctAnsText}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'صحيحة' : 'خاطئة'}
+                        </span>
+                    </td>
+                `;
+                reviewTbody.appendChild(tr);
+            });
+
+            const pct = Math.round((correct / total) * 100);
+            document.getElementById("final-score").innerText = `${correct} / ${total}`;
+            document.getElementById("final-percentage").innerText = `${pct}%`;
+
+            let rating = "ممتاز مرتفع 🌟";
+            let rec = "أداء استثنائي باهر! الطالب متمكن تماماً من جميع معايير الدوال والمعادلات والمقادير المحددة للامتحان.";
+            if (pct < 50) {
+                rating = "يحتاج إلى مراجعة مكثفة ⚠️";
+                rec = "ينصح بمراجعة خطوات تبسيط الجذور، وخطوات التعويض في القانون العام $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$، وتحديد رأس المنحنى $a(x-h)^2+k$.";
+            } else if (pct < 75) {
+                rating = "جيد جداً 👍";
+                rec = "أداء جيد! يُوصى بالتدرب الإضافي على حل المعادلات بالتحليل وتبسيط المقادير الأسية وتحديد قيمة المميز $\\Delta$.";
+            } else if (pct < 90) {
+                rating = "ممتاز 👏";
+                rec = "أحسنت أداء متقدم جداً! قم بمراجعة الأخطاء البسيطة للوصول إلى الدرجة الكاملة في الامتحان.";
+            }
+            document.getElementById("final-rating").innerText = rating;
+            document.getElementById("teacher-recommendation").innerText = rec;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById("final-time").innerText = `${mins}:${secs}`;
+
+            // Category progress bars
+            for (const key in categoryStats) {
+                const stat = categoryStats[key];
+                const catPct = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
+
+                if (key === 'quadratic_functions') {
+                    document.getElementById('cat-score-quad-func').innerText = `${catPct}%`;
+                    document.getElementById('cat-bar-quad-func').style.width = `${catPct}%`;
+                } else if (key === 'quadratic_equations') {
+                    document.getElementById('cat-score-quad-eq').innerText = `${catPct}%`;
+                    document.getElementById('cat-bar-quad-eq').style.width = `${catPct}%`;
+                }
+            }
+
+            renderPerformanceChart(categoryStats);
+            renderKaTeX();
+        }
+
+        function renderPerformanceChart(categoryStats) {
+            const ctx = document.getElementById('performance-chart').getContext('2d');
+
+            if (performanceChartInstance) {
+                performanceChartInstance.destroy();
+            }
+
+            const labels = Object.values(categoryStats).map(s => s.name);
+            const dataScores = Object.values(categoryStats).map(s => s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0);
+
+            performanceChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'نسبة الإتقان %',
+                        data: dataScores,
+                        backgroundColor: [
+                            'rgba(2, 132, 199, 0.8)',
+                            'rgba(16, 185, 129, 0.8)'
+                        ],
+                        borderColor: [
+                            '#0284c7',
+                            '#10b981'
+                        ],
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) { return value + "%"; }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // -------------------------------------------------------------
+        // TAB 4: TEACHER SHARE
+        // -------------------------------------------------------------
+        function copyWhatsAppMessage() {
+            const text = document.getElementById("whatsapp-template-text").value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("تم نسخ رسالة الواتساب بنجاح! يمكنك الآن لصقها في مجموعات الطلاب.");
+            });
+        }
+
+        function openWhatsAppShare() {
+            const text = encodeURIComponent(document.getElementById("whatsapp-template-text").value);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function exportQuizStructure() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(rawQuestions, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "math_grade10_35_questions_bank.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
